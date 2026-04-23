@@ -15,7 +15,7 @@
 
 ## 🎯 À propos
 
-Ce dépôt contient une **page de démonstration complète** (`demo_maths.html`) destinée aux **enseignants de mathématiques** du secondaire et du supérieur. Elle illustre comment intégrer des figures mathématiques de qualité LaTeX dans n'importe quelle page web statique — sans back-end, sans dépendance externe à exécuter côté serveur.
+Ce dépôt contient une **page de démonstration complète** (`index.html`) destinée aux **enseignants de mathématiques** du secondaire et du supérieur. Elle illustre comment intégrer des figures mathématiques de qualité LaTeX dans n'importe quelle page web statique — sans back-end, sans dépendance externe à exécuter côté serveur.
 
 Toute la compilation TikZ se fait **dans le navigateur** via [TikZJax](https://github.com/kisonecat/tikzjax) (WebAssembly). Les formules sont rendues par **MathJax 3**. Les deux cohabitent sans aucun conflit.
 
