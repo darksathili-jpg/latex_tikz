@@ -49,7 +49,7 @@ Toute la compilation TikZ se fait **dans le navigateur** via le fork [TikZJax @r
 
 ```
 .
-├── demo_maths.html      # Page de démonstration complète (10 chapitres, 15 figures)
+├── index.html           # Page de démonstration complète (10 chapitres, 15 figures)
 ├── tikzjax.js           # Moteur TikZJax — point d'entrée JS (fork @rod2ik)
 ├── run-tex.js           # Worker WebAssembly TeX
 ├── core.dump.gz         # Dump du format LaTeX compilé (~2.8 Mo)
