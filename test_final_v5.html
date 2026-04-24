@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8"><title>Test final v5</title>
+<link rel="stylesheet" href="fonts.css">
+<script src="tikzjax.js"></script>
+<style>
+body{font-family:monospace;background:#0f0e17;color:#e0e0e0;padding:2rem}
+.b{background:#1a1a2e;border:2px solid #444;border-radius:8px;padding:1.5rem;margin-bottom:1.5rem}
+h3{margin:0 0 .75rem;color:#89b4fa;font-size:.85rem}
+.r{background:white;padding:1rem;text-align:center;min-height:40px;border-radius:6px}
+</style></head><body>
+<h1 style="color:#cba6f7">Test final v5 — 15 blocs</h1>
+<div class="b"><h3>BLOC 1</h3><div class="r"><script type="text/tikz" data-tex-packages='{"tkz-tab": ""}'>
+            \begin{tikzpicture}
+              \tkzTabInit[lgt=3, espcl=2.5]
+                {$x$     / 1,
+                 $f'(x) = 2x$ / 1,
+                 $f(x)$  / 2}
+                {$-\infty$, $0$, $+\infty$}
+              \tkzTabLine{, -, z, +, }
+              \tkzTabVar{+/$+\infty$, -/$-4$, +/$+\infty$}
+            \end{tikzpicture}
+          </script></div></div>
+<div class="b"><h3>BLOC 2</h3><div class="r"><script type="text/tikz" data-tex-packages='{"tkz-tab": ""}'>
+            \begin{tikzpicture}
+              \tkzTabInit[lgt=3.5, espcl=2.8]
+                {$x$     / 1,
+                 $f'(x)$ / 1,
+                 $f(x)$  / 2.5}
+                {$-\infty$, $-1$, $0$, $1$, $+\infty$}
+              \tkzTabLine{, -, z, +, d, -, z, +, }
+              \tkzTabVar
+                {+/$0^-$,
+                 -/$-2$,
+                 +D-/$+\infty$/$-\infty$,
+                 +/$2$,
+                 -/$0^+$}
+              \tkzTabVal[draw]{1}{2}{0.5}{$-\sqrt{2}$}{$-\sqrt{2}$}
+              \tkzTabVal[draw]{4}{5}{0.5}{$\sqrt{2}$}{$\sqrt{2}$}
+            \end{tikzpicture}
+          </script></div></div>
+<div class="b"><h3>BLOC 3</h3><div class="r"><script type="text/tikz" data-tex-packages='{"tkz-tab": ""}'>
+            \begin{tikzpicture}
+              \tkzTabInit[lgt=3, espcl=2]
+                {$x$            / 1,
+                 $x+3$          / 1,
+                 $x-1$          / 1,
+                 $x-2$          / 1,
+                 $f(x)$         / 1}
+                {$-\infty$, $-3$, $1$, $2$, $+\infty$}
+              \tkzTabLine{, -, z, +, , +, , +, }
+              \tkzTabLine{, -, , -, z, +, , +, }
+              \tkzTabLine{, -, , -, , -, d, +, }
+              \tkzTabLine{, -, z, +, z, -, d, +, }
+            \end{tikzpicture}
+          </script></div></div>
+<div class="b"><h3>BLOC 4</h3><div class="r"><script type="text/tikz" >
+            \begin{tikzpicture}[scale=1.1]
+              \draw[->] (-0.3,0) -- (3.8,0) node[right] {$x$};
+              \draw[->] (0,-0.3) -- (0,3.5) node[above] {$y$};
+              \foreach \x in {1,2,3} {
+                \draw (\x,2pt) -- (\x,-2pt) node[below,font=\small] {$\x$};
+              }
+              \foreach \y in {1,2,3} {
+                \draw (2pt,\y) -- (-2pt,\y) node[left,font=\small] {$\y$};
+              }
+              \fill[blue!15] (1,0) -- plot[domain=1:3,samples=60]
+                (\x,{0.3*\x*\x}) -- (3,0) -- cycle;
+              \draw[blue!60,thick,dashed] (1,0) -- (1,{0.3*1*1});
+              \draw[blue!60,thick,dashed] (3,0) -- (3,{0.3*3*3});
+              \draw[blue,very thick] plot[domain=0.1:3.5,samples=80]
+                (\x,{0.3*\x*\x});
+              \draw[red,thick] plot[domain=0.5:3.5,samples=2]
+                (\x,{0.6*2*(\x-2)+0.3*4}) node[right,red,font=\small] {tangente en $2$};
+              \fill[red] (2,{0.3*4}) circle (2pt);
+              \node[blue,right,font=\small] at (3.5,{0.3*3.5*3.5}) {$f(x)=\frac{3x^2}{10}$};
+              \node[font=\small] at (2,0.35) {$\int_1^3 f$};
+            \end{tikzpicture}
+          </script></div></div>
+<div class="b"><h3>BLOC 5</h3><div class="r"><script type="text/tikz" >
+            \begin{tikzpicture}[scale=0.55]
+              \begin{scope}
+                \draw[->] (-0.3,0)--(7,0) node[right,font=\small]{$x$};
+                \draw[->] (0,-0.5)--(0,2.8) node[above,font=\small]{$y$};
+                \draw[teal,very thick]
+                  plot[domain=0:2*pi,samples=120,smooth]
+                  ({(\x - sin(\x r))},{(1 - cos(\x r))});
+                \node[teal,font=\footnotesize] at (3,2.6)
+                  {cyclo\^{\i}de : $x=t-\sin t$, $y=1-\cos t$};
+              \end{scope}
+              \begin{scope}[xshift=9cm]
+                \draw[->] (-2.2,0)--(2.2,0) node[right,font=\small]{$x$};
+                \draw[->] (0,-1.5)--(0,1.5) node[above,font=\small]{$y$};
+                \draw[purple,very thick]
+                  plot[domain=0:2*pi,samples=200,smooth]
+                  ({2*cos(\x r)*sqrt(abs(cos(2*\x r)))*sign(cos(2*\x r))},
+                   {2*sin(\x r)*sqrt(abs(cos(2*\x r)))*sign(cos(2*\x r))});
+                \node[purple,font=\footnotesize] at (0,-1.3)
+                  {lemniscate : $r^2=4\cos 2\theta$};
+              \end{scope}
+            \end{tikzpicture}
+          </script></div></div>
+<div class="b"><h3>BLOC 6</h3><div class="r"><script type="text/tikz" >
+            \usetikzlibrary{angles,quotes,patterns,decorations.pathreplacing}
+            \begin{tikzpicture}[scale=1.15]
+              \coordinate (A) at (0,0);
+              \coordinate (B) at (4,0);
+              \coordinate (C) at (1.2,3);
+              \coordinate (H) at (1.2,0);
+              \fill[blue!8] (A)--(B)--(C)--cycle;
+              \draw[fill=blue!8, pattern=north west lines, pattern color=blue!30]
+                (A)--(B)--(C)--cycle;
+              \draw[thick,blue] (A)--(B)--(C)--cycle;
+              \draw[dashed,gray] (C)--(H);
+              \draw[gray] (H)+(0.15,0)--(H)+(0.15,0.15)--(H)+(0,0.15);
+              \pic[draw,angle radius=12pt,"$\alpha$" font=\small]{angle=B--A--C};
+              \pic[draw,angle radius=10pt,"$\beta$" font=\small]{angle=C--B--A};
+              \draw[decorate,decoration={brace,mirror,amplitude=6pt}]
+                (A)--(H) node[midway,below=8pt,font=\small]{$d_1$};
+              \draw[decorate,decoration={brace,mirror,amplitude=6pt}]
+                (H)--(B) node[midway,below=8pt,font=\small]{$d_2$};
+              \draw[|-|,red,thick] (C)--(H) node[midway,right=3pt,font=\small]{$h$};
+              \node[below left,font=\small] at (A) {$A$};
+              \node[below right,font=\small] at (B) {$B$};
+              \node[above,font=\small] at (C) {$C$};
+              \node[below,font=\small] at (H) {$H$};
+            \end{tikzpicture}
+          </script></div></div>
+<div class="b"><h3>BLOC 7</h3><div class="r"><script type="text/tikz" >            \begin{tikzpicture}[scale=1.7]
+              \draw[gray!30] (0,0) circle (1);
+              \draw[->] (-1.3,0)--(1.3,0) node[right,font=\small]{$x$};
+              \draw[->] (0,-1.3)--(0,1.3) node[above,font=\small]{$y$};
+              \node[right,font=\tiny,gray] at (1.18,0.0) {$0$};
+              \node[above right,font=\tiny,gray] at (1.0219,0.59) {$\pi/6$};
+              \node[above right,font=\tiny,gray] at (0.8344,0.8344) {$\pi/4$};
+              \node[above right,font=\tiny,gray] at (0.59,1.0219) {$\pi/3$};
+              \node[above,font=\tiny,gray] at (0.0,1.18) {$\pi/2$};
+              \node[above left,font=\tiny,gray] at (-0.59,1.0219) {$2\pi/3$};
+              \node[above left,font=\tiny,gray] at (-0.8344,0.8344) {$3\pi/4$};
+              \node[above left,font=\tiny,gray] at (-1.0219,0.59) {$5\pi/6$};
+              \node[left,font=\tiny,gray] at (-1.18,0.0) {$\pi$};
+              \node[below left,font=\tiny,gray] at (-1.0219,-0.59) {$7\pi/6$};
+              \node[below left,font=\tiny,gray] at (-0.8344,-0.8344) {$5\pi/4$};
+              \node[below left,font=\tiny,gray] at (-0.59,-1.0219) {$4\pi/3$};
+              \node[below,font=\tiny,gray] at (-0.0,-1.18) {$3\pi/2$};
+              \node[below right,font=\tiny,gray] at (0.59,-1.0219) {$5\pi/3$};
+              \node[below right,font=\tiny,gray] at (0.8344,-0.8344) {$7\pi/4$};
+              \node[below right,font=\tiny,gray] at (1.0219,-0.59) {$11\pi/6$};
+              \draw[blue,very thick] (0,0)--(0.5,0.866);
+              \draw[red,dashed,thin] (0.5,0)--(0.5,0.866);
+              \draw[teal,dashed,thin] (0,0.866)--(0.5,0.866);
+              \fill[blue] (0.5,0.866) circle (2pt);
+              \node[right,font=\scriptsize,blue] at (0.55,0.866)
+                {$M\!\left(\frac{1}{2},\frac{\sqrt{3}}{2}\right)$};
+              \node[font=\scriptsize] at (0.2,0.07) {$\pi/3$};
+            \end{tikzpicture}
+          </script></div></div>
+<div class="b"><h3>BLOC 8</h3><div class="r"><script type="text/tikz" data-tex-packages='{"pgfplots": ""}'>
+            \begin{tikzpicture}
+              \begin{axis}[
+                width=7cm, height=5.5cm,
+                xlabel={Notes},
+                ylabel={Effectifs},
+                ymin=0, ymax=9,
+                xmin=0, xmax=21,
+                xtick={0,5,10,15,20},
+                ymajorgrids=true,
+                grid style={dashed,gray!30},
+                bar width=0.9,
+                title={\small R\'epartition des notes ($n=30$)},
+                title style={font=\small}
+              ]
+                \addplot[ybar,fill=teal!50,draw=teal!80] coordinates {
+                  (2.5,2)(7.5,5)(12.5,8)(17.5,7)(19.5,3) (21,5)
+                };
+              \end{axis}
+            \end{tikzpicture}
+          </script></div></div>
+<div class="b"><h3>BLOC 9</h3><div class="r"><script type="text/tikz" data-tex-packages='{"pgfplots": ""}'>
+            \begin{tikzpicture}
+              \begin{axis}[
+                width=7cm, height=5.5cm,
+                xlabel={$x$},
+                ylabel={$y$},
+                xmin=0,xmax=11,
+                ymin=0,ymax=22,
+                grid=major,
+                grid style={dashed,gray!25},
+                legend pos=north west,
+                legend style={font=\small}
+              ]
+                \addplot[only marks,mark=*,mark size=2pt,blue!70]
+                  coordinates {
+                    (1,3)(2,4.5)(3,7)(4,8)(5,10)
+                    (6,11)(7,13)(8,15)(9,17)(10,19)
+                  };
+                \addplot[red,very thick,domain=0:11,samples=2]
+                  {1.8*x+1.2};
+                \legend{Donn\'ees, $\hat{y}=1.8x+1.2$}
+              \end{axis}
+            \end{tikzpicture}
+          </script></div></div>
+<div class="b"><h3>BLOC 10</h3><div class="r"><script type="text/tikz" >
+            \begin{tikzpicture}[
+              level 1/.style={sibling distance=3.5cm, level distance=2cm},
+              level 2/.style={sibling distance=1.8cm, level distance=2cm},
+              every node/.style={font=\small},
+              edge from parent/.style={draw,thick}
+            ]
+            \node[circle,draw,fill=gray!15,inner sep=2pt] {$\Omega$}
+              child {
+                node[circle,draw,fill=blue!20] {$R_1$}
+                child {
+                  node[rectangle,draw,fill=blue!10,rounded corners] {$R_1\cap R_2$}
+                  edge from parent node[left,font=\footnotesize] {$\frac{2}{5}$}
+                }
+                child {
+                  node[rectangle,draw,fill=orange!20,rounded corners] {$R_1\cap N_2$}
+                  edge from parent node[right,font=\footnotesize] {$\frac{3}{5}$}
+                }
+                edge from parent node[left,font=\footnotesize] {$\frac{3}{6}$}
+              }
+              child {
+                node[circle,draw,fill=gray!30] {$N_1$}
+                child {
+                  node[rectangle,draw,fill=blue!10,rounded corners] {$N_1\cap R_2$}
+                  edge from parent node[left,font=\footnotesize] {$\frac{3}{5}$}
+                }
+                child {
+                  node[rectangle,draw,fill=gray!20,rounded corners] {$N_1\cap N_2$}
+                  edge from parent node[right,font=\footnotesize] {$\frac{2}{5}$}
+                }
+                edge from parent node[right,font=\footnotesize] {$\frac{3}{6}$}
+              };
+            \end{tikzpicture}
+          </script></div></div>
+<div class="b"><h3>BLOC 11</h3><div class="r"><script type="text/tikz" >
+            \usetikzlibrary{positioning}
+            \begin{tikzpicture}[
+              node/.style={circle,draw,thick,minimum size=28pt,font=\small},
+              marked/.style={circle,draw,thick,fill=teal!30,minimum size=28pt,font=\small},
+              >=stealth
+            ]
+              \node[marked] (A) at (0,0)   {$A$};
+              \node[node]   (B) at (2.5,1.2) {$B$};
+              \node[node]   (C) at (2.5,-1.2){$C$};
+              \node[node]   (D) at (5,0)   {$D$};
+              \node[node]   (E) at (7,1)   {$E$};
+              \node[node]   (F) at (7,-1)  {$F$};
+
+              \draw[thick] (A)--(B) node[midway,above,font=\footnotesize]{4};
+              \draw[thick] (A)--(C) node[midway,below,font=\footnotesize]{2};
+              \draw[thick] (B)--(C) node[midway,right,font=\footnotesize]{1};
+              \draw[thick] (B)--(D) node[midway,above,font=\footnotesize]{5};
+              \draw[thick] (C)--(D) node[midway,below,font=\footnotesize]{8};
+              \draw[red,very thick] (A)--(C)
+                node[midway,below,font=\footnotesize,red]{2};
+              \draw[red,very thick] (C)--(B)
+                node[midway,right,font=\footnotesize,red]{1};
+              \draw[thick] (D)--(E) node[midway,above,font=\footnotesize]{2};
+              \draw[thick] (D)--(F) node[midway,below,font=\footnotesize]{3};
+              \draw[thick] (E)--(F) node[midway,right,font=\footnotesize]{1};
+
+              \node[above left=2pt,font=\scriptsize,teal] at (A) {\textbf{0}};
+              \node[above=2pt,font=\scriptsize] at (B) {3};
+              \node[below=2pt,font=\scriptsize] at (C) {2};
+            \end{tikzpicture}
+          </script></div></div>
+<div class="b"><h3>BLOC 12</h3><div class="r"><script type="text/tikz" data-tex-packages='{"tikz-cd": ""}'>
+            \begin{tikzpicture}
+              \begin{scope}[yshift=0.8cm]
+                \node (Oz) at (-1.2,0) {$0$};
+                \node (A)  at (0.8,0)  {$A$};
+                \node (B)  at (2.8,0)  {$B$};
+                \node (C)  at (4.8,0)  {$C$};
+                \node (Un) at (6.2,0)  {$0$};
+                \draw[->] (Oz)--(A);
+                \draw[->] (A)--(B) node[midway,above,font=\small]{$f$};
+                \draw[->] (B)--(C) node[midway,above,font=\small]{$g$};
+                \draw[->] (C)--(Un);
+              \end{scope}
+              \begin{scope}[yshift=-1.5cm]
+                \node (Ap)  at (0,0)   {$A^{\prime}$};
+                \node (Bp)  at (2,0)   {$B^{\prime}$};
+                \node (App) at (0,-1.6){$A^{\prime\prime}$};
+                \node (Bpp) at (2,-1.6){$B^{\prime\prime}$};
+                \draw[->] (Ap)--(Bp)   node[midway,above,font=\small]{$\phi$};
+                \draw[->] (App)--(Bpp) node[midway,below,font=\small]{$\psi$};
+                \draw[->] (Ap)--(App)  node[midway,left,font=\small]{$\alpha$};
+                \draw[->] (Bp)--(Bpp)  node[midway,right,font=\small]{$\beta$};
+                \draw[->,looseness=6,out=45,in=-45] (Bp) to (Ap);
+              \end{scope}
+            \end{tikzpicture}
+          </script></div></div>
+<div class="b"><h3>BLOC 13</h3><div class="r"><script type="text/tikz" data-tex-packages='{"pgfplots": ""}'>
+            \begin{tikzpicture}
+              \begin{axis}[
+                width=8cm, height=5cm,
+                xmin=-3.8, xmax=3.8,
+                ymin=-0.02, ymax=0.45,
+                axis x line=bottom,
+                axis y line=none,
+                xtick={-1.96,0,1.96},
+                xticklabels={$-1.96$,$0$,$1.96$},
+                xlabel={},
+                tick align=outside,
+                tick style={gray}
+              ]
+                \addplot[blue!60,fill=blue!12,
+                  domain=-1.96:1.96,samples=100]
+                  {exp(-x^2/2)/sqrt(2*pi)} \closedcycle;
+                \addplot[red!80,fill=red!20,
+                  domain=-3.8:-1.96,samples=60]
+                  {exp(-x^2/2)/sqrt(2*pi)} \closedcycle;
+                \addplot[red!80,fill=red!20,
+                  domain=1.96:3.8,samples=60]
+                  {exp(-x^2/2)/sqrt(2*pi)} \closedcycle;
+                \addplot[blue,very thick,
+                  domain=-3.8:3.8,samples=150]
+                  {exp(-x^2/2)/sqrt(2*pi)};
+                \node[font=\small,blue] at (axis cs:0,0.22) {$95\%$};
+                \node[font=\scriptsize,red] at (axis cs:-2.7,0.04) {$2.5\%$};
+                \node[font=\scriptsize,red] at (axis cs:2.7,0.04)  {$2.5\%$};
+              \end{axis}
+            \end{tikzpicture}
+          </script></div></div>
+<div class="b"><h3>BLOC 14</h3><div class="r"><script type="text/tikz" data-tex-packages='{"tikz-3dplot": ""}'>
+            \tdplotsetmaincoords{65}{125}
+            \begin{tikzpicture}[tdplot_main_coords,scale=1.3]
+              \draw[thick,->] (0,0,0)--(2.5,0,0)
+                node[anchor=north east,font=\small]{$x$};
+              \draw[thick,->] (0,0,0)--(0,2.5,0)
+                node[anchor=north west,font=\small]{$y$};
+              \draw[thick,->] (0,0,0)--(0,0,2.5)
+                node[anchor=south,font=\small]{$z$};
+              \fill[blue!10,opacity=0.5]
+                (0,0,0)--(2,0,0)--(2,2,0)--(0,2,0)--cycle;
+              \draw[blue!50,dashed]
+                (0,0,0)--(2,0,0)--(2,2,0)--(0,2,0)--cycle;
+              \draw[red,very thick,->] (0,0,0)--(1.2,1,1.5)
+                node[right,font=\small]{$\vec{v}$};
+              \draw[dashed,gray] (1.2,1,0)--(1.2,1,1.5);
+              \draw[dashed,gray] (1.2,0,0)--(1.2,1,0);
+              \draw[dashed,gray] (0,1,0)--(1.2,1,0);
+              \fill[gray] (1.2,1,1.5) circle (1.5pt);
+              \node[font=\small,below] at (1,1,0) {$H$};
+              \tdplotdrawarc[teal]{(0,0,0)}{1.8}{0}{90}{}{}
+            \end{tikzpicture}
+          </script></div></div>
+<div class="b"><h3>BLOC 15</h3><div class="r"><script type="text/tikz" >
+            \usetikzlibrary{automata,positioning}
+            \begin{tikzpicture}[
+              auto,
+              node distance=2.2cm,
+              every state/.style={
+                draw,circle,minimum size=28pt,
+                font=\small,thick
+              },
+              >=stealth
+            ]
+              \node[state,initial,initial text={}]
+                (q0) {$q_0$};
+              \node[state,right=of q0]
+                (q1) {$q_1$};
+              \node[state,accepting,right=of q1]
+                (q2) {$q_2$};
+              \node[state,right=of q2]
+                (q3) {$q_3$ (\textsf{err})};
+
+              \path[->] (q0) edge node {$a$} (q1)
+                             edge[loop above] node {$a$} (q0);
+              \path[->] (q0) edge[bend left=30] node {$b$} (q2);
+              \path[->] (q1) edge node {$b$} (q2)
+                             edge[loop above] node {$a$} (q1);
+              \path[->] (q2) edge[loop above] node {$b$} (q2);
+              \path[->] (q2) edge node {$a$} (q3);
+              \path[->] (q3) edge[loop right] node {$a,b$} (q3);
+            \end{tikzpicture}
+          </script></div></div>
+</body></html>
