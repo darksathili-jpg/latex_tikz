@@ -56,16 +56,19 @@ Toute la compilation TikZ se fait **dans le navigateur** via le fork [TikZJax @r
 ├── tex.wasm.gz          # Binaire WebAssembly de TeX (~120 Ko)
 ├── fonts.css            # Feuille de style des polices mathématiques TeX
 ├── fonts/               # Polices mathématiques WOFF2 (Computer Modern)
-└── tex_files/           # Packages TikZ/LaTeX compilés
-    ├── tkz-tab.sty.gz
-    ├── pgfplots.sty.gz
-    ├── tikz-3dplot.sty.gz
-    ├── tikzlibraryautomata.code.tex.gz
-    ├── tikzlibrarypatterns.code.tex.gz
-    └── ...              # ~60 packages disponibles
+├── tex_files/           # Packages TikZ/LaTeX compilés
+│   ├── tkz-tab.sty.gz
+│   ├── pgfplots.sty.gz
+│   ├── tikz-3dplot.sty.gz
+│   ├── tikzlibraryautomata.code.tex.gz
+│   ├── tikzlibrarypatterns.code.tex.gz
+│   └── ...              # ~60 packages disponibles
+└── tests/               # Exemples d'organisation en sous-dossiers (voir section dédiée)
+    ├── script.js
+    └── test_christophe.html
 ```
 
-> ⚠️ **Tous ces fichiers doivent résider dans le même dossier que votre HTML.** TikZJax localise ses assets via `document.currentScript.src` — un CDN externe ne fonctionnera pas (CORS).
+> ⚠️ **`tikzjax.js`, `run-tex.js`, `core.dump.gz`, `tex.wasm.gz`, `fonts.css` et `fonts/` doivent toujours rester ensemble à la racine du projet.** TikZJax localise ses assets via `document.currentScript.src` — le worker `run-tex.js` est toujours résolu depuis la racine du serveur HTTP.
 
 ---
 
@@ -79,12 +82,14 @@ Toute la compilation TikZ se fait **dans le navigateur** via le fork [TikZJax @r
 # 1. Cloner le dépôt
 git clone https://github.com/darksathili-jpg/latex_tikz.git
 
-# 2. Ouvrir dans VS Code
+# 2. Ouvrir le dossier racine dans VS Code
 code latex_tikz
 
 # 3. Installer l'extension Live Server si besoin
-# 4. Clic droit sur demo_maths.html → "Open with Live Server"
+# 4. Clic droit sur index.html → "Open with Live Server"
 ```
+
+> ⚠️ **Toujours ouvrir VS Code depuis la racine du dépôt** (`latex_tikz/`). Si vous ouvrez un sous-dossier, le serveur ne trouvera pas `tikzjax.js` et `run-tex.js`.
 
 ### Option 2 — Python (aucune installation requise)
 
@@ -100,6 +105,117 @@ python3 -m http.server 8080
 ```bash
 npx serve .
 # → http://localhost:3000/index.html
+```
+
+---
+
+## 🗂 Organiser ses fichiers en sous-dossiers
+
+Le dossier `tests/` illustre une pratique clé : **il est tout à fait possible de placer ses pages HTML dans des sous-dossiers**, à condition de respecter une règle simple sur les chemins.
+
+### Pourquoi cette contrainte ?
+
+TikZJax charge `run-tex.js` et `tex.wasm.gz` **toujours depuis la racine du serveur HTTP**, quelle que soit la position de `tikzjax.js`. Il faut donc que le serveur soit lancé depuis la racine du dépôt, et que les chemins dans le HTML pointent correctement vers les assets.
+
+### Structure type
+
+```
+latex_tikz/                  ← racine — ouvrir Live Server ICI
+├── tikzjax.js
+├── run-tex.js
+├── core.dump.gz
+├── tex.wasm.gz
+├── fonts.css
+├── fonts/
+├── tex_files/
+├── index.html               ← page principale (chemins directs : src="tikzjax.js")
+└── tests/                   ← sous-dossier d'exemple
+    ├── test_christophe.html ← chemins remontés : src="../tikzjax.js"
+    └── script.js            ← code LaTeX externalisé dans une variable JS
+```
+
+### Chemins dans un fichier HTML en sous-dossier
+
+```html
+<!-- Dans tests/test_christophe.html -->
+<link rel="stylesheet" href="../fonts.css">
+<script src="../tikzjax.js"></script>
+```
+
+Le `../` remonte d'un niveau pour atteindre la racine où se trouvent les assets TikZJax.
+
+---
+
+## 📦 Externaliser le code LaTeX dans un fichier JS séparé : POUR CHRISTOPHE
+
+Le dossier `tests/` illustre également une technique utile : **séparer le code LaTeX du HTML** en le plaçant dans un fichier `script.js` dédié. Cela permet de mieux organiser son projet, de réutiliser facilement le même code TikZ dans plusieurs pages, et de modifier les figures sans toucher au HTML.
+
+### `tests/script.js` — le code LaTeX comme variable JS
+
+```javascript
+// Contenu LaTeX TikZ — modifier uniquement ce fichier pour changer le diagramme
+const tikzCode = `
+\\begin{tikzpicture}
+    \\tkzTabInit[lgt=3, espcl=2.5]
+    {$x$     / 1,
+        $f'(x) = 2x$ / 1,
+        $f(x)$  / 2}
+    {$-\\infty$, $0$, $+\\infty$}
+    \\tkzTabLine{, -, z, +, }
+    \\tkzTabVar{+/$+\\infty$, -/$-4$, +/$+\\infty$}
+\\end{tikzpicture}
+`;
+```
+
+> ⚠️ Dans un template literal JavaScript, les backslashes LaTeX doivent être **doublés** : `\infty` s'écrit `\\infty`, `\begin` s'écrit `\\begin`, etc.
+
+### `tests/test_christophe.html` — injection dynamique
+
+TikZJax ne supporte pas l'attribut `src` sur `<script type="text/tikz">` — le code LaTeX doit être **inline** dans la balise. On crée donc la balise dynamiquement en JavaScript après avoir chargé `script.js` :
+
+```html
+<head>
+  <link rel="stylesheet" href="../fonts.css">
+  <!--
+    tikzjax.js est chargé dynamiquement à la fin du body,
+    APRÈS l'injection du contenu LaTeX dans le DOM.
+  -->
+</head>
+<body>
+
+  <!-- Conteneur qui recevra le rendu TikZ -->
+  <div id="tikz-container"></div>
+
+  <!-- 1) Charge script.js qui définit la variable tikzCode -->
+  <script src="script.js"></script>
+
+  <!-- 2) Injecte le LaTeX dans une balise <script type="text/tikz"> -->
+  <script>
+    (function () {
+      const el = document.createElement('script');
+      el.type = 'text/tikz';
+      el.setAttribute('data-tex-packages', JSON.stringify({ "tkz-tab": "" }));
+      el.textContent = tikzCode;
+      document.getElementById('tikz-container').appendChild(el);
+    })();
+  </script>
+
+  <!-- 3) Charge tikzjax.js APRÈS l'injection — il scanne le DOM au chargement -->
+  <script src="../tikzjax.js"></script>
+
+</body>
+```
+
+### Pourquoi charger `tikzjax.js` en dernier ?
+
+TikZJax scanne le DOM **au moment de son chargement** pour détecter les balises `<script type="text/tikz">`. Si on le charge dans le `<head>`, avant l'injection dynamique, il ne trouve rien à compiler. En le plaçant **après** l'injection, on garantit que le contenu est déjà présent dans le DOM.
+
+### En résumé — ordre de chargement obligatoire
+
+```
+1. script.js        → définit const tikzCode = `...`
+2. Injection JS     → crée <script type="text/tikz"> et l'insère dans le DOM
+3. tikzjax.js       → scanne le DOM et compile les blocs TikZ trouvés
 ```
 
 ---
@@ -306,7 +422,7 @@ Navigateur
     │       │                 charge les assets via document.currentScript.src
     │       ▼
     ├─ run-tex.js          ← Web Worker — isole la compilation TeX
-    │       │
+    │       │                 toujours résolu depuis la racine du serveur HTTP
     │       ├─ tex.wasm.gz ← binaire WebAssembly du moteur TeX
     │       ├─ core.dump.gz← format LaTeX préchargé (plain TeX + pgf)
     │       └─ tex_files/  ← packages chargés à la demande via data-tex-packages
@@ -315,6 +431,8 @@ Navigateur
 ```
 
 **Pourquoi serveur local obligatoire ?** : `run-tex.js` est chargé comme Web Worker. Les navigateurs bloquent les Workers et les fichiers `.wasm` chargés depuis `file://` (politique CORS). Un serveur HTTP, même `python3 -m http.server`, lève cette restriction.
+
+**Pourquoi toujours ouvrir depuis la racine ?** : `run-tex.js` est résolu depuis la racine du serveur HTTP (`http://localhost/run-tex.js`), indépendamment de l'emplacement de `tikzjax.js`. Si Live Server est lancé depuis un sous-dossier, le worker sera introuvable (404) même si le chemin relatif vers `tikzjax.js` est correct.
 
 ---
 

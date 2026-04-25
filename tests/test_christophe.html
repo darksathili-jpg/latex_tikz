@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ecrire des mathematiques en LaTeX avec TikZ dans une page web</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@400;700&family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;1,400&family=Libre+Baskerville:ital,wght@0,700;1,400&family=Space+Mono&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="../fonts.css">
+  <script>MathJax = { tex: { inlineMath: [["\\(", "\\)"]], displayMath: [[" \\[", " \\]"]] } };</script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+
+  <!--
+    IMPORTANT : tikzjax.js doit être chargé APRÈS l'injection du contenu.
+    On le charge donc dynamiquement à la fin, après avoir injecté tikzCode.
+  -->
+</head>
+<body>
+
+  <!-- Conteneur qui recevra le rendu TikZ -->
+  <div id="tikz-container"></div>
+
+  <!-- 1) Charge script.js qui définit la variable tikzCode -->
+  <script src="script.js"></script>
+
+  <!-- 2) Injecte le LaTeX dans une balise <script type="text/tikz"> -->
+  <script>
+    (function () {
+      const el = document.createElement('script');
+      el.type = 'text/tikz';
+
+      // Packages LaTeX nécessaires (équivalent de data-tex-packages)
+      el.setAttribute('data-tex-packages', JSON.stringify({ "tkz-tab": "" }));
+
+      el.textContent = tikzCode;
+      document.getElementById('tikz-container').appendChild(el);
+    })();
+  </script>
+
+  <!-- 3) Charge TikZJax APRÈS l'injection — il scanne le DOM au chargement -->
+  <script src="../tikzjax.js"></script>
+
+</body>
+</html>
